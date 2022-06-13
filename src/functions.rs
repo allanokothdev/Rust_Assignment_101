@@ -57,7 +57,7 @@ pub fn bank() {
         println!("Transfered Amount: {:?}", transfer);
         println!("Okoth New Balance: {}", accounts[0].balance);
         println!("Bob New Balance: {}", accounts[1].balance);
-        println!("Okoth sent {} to Bob, increasing Bob's balance from {} to {}", transfer, pre_transfer_recipient_balance, accounts[0].balance);
+        println!("Okoth sent {} to Bob, increasing Bob's balance from {} to {}", transfer, pre_transfer_recipient_balance, accounts[1].balance);
     } else {
         println!("Insufficient Balance");
     }
