@@ -64,13 +64,6 @@ struct Account {
 }
 
 impl Account {
-    pub fn copy(&self) -> Account {
-        Account {
-            id: self.id.clone(),
-            name: self.name.clone(),
-            balance: self.balance,
-        }
-    }
     pub fn new(id: &str, name: &str, balance: f64) -> Self {
         Account {id: id.to_string(), name: name.to_string(), balance: balance}
     }
