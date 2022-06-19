@@ -6,38 +6,55 @@ pub fn run() {
 
     //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
-    let mut _allan_account = Account::new("allanokoth.testnet","Allan",100.0);
+    let mut _allan_account = Account::new("allanokoth.testnet","Allan",1000.0);
     _allan_account.print_details();
     accounts.push(_allan_account);
 
     //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
-    let mut _james_account = Account::new("james.testnet","James",100.0);
+    let mut _james_account = Account::new("james.testnet","James",1000.0);
     _james_account.print_details();
     accounts.push(_james_account);
 
      //Depositing Money
-    println!("//DEPOSIT MONEY//");
-    accounts[0].deposit_money(50.0);
-    accounts[1].deposit_money(50.0);
+    println!("//DEPOSIT 1000 & 2000 respectively//");
+    accounts[0].deposit_money(1000.0);
+    accounts[1].deposit_money(2000.0);
+    println!("{:?}", accounts);
+    
 
      //Withdrawing Money
-     println!("//WITHDRAWING MONEY");
-     accounts[0].withdraw_money(200.0);
-     accounts[1].withdraw_money(100.0);
+     println!("//WITHDRAWING 500 & 700 respectively");
+     accounts[0].withdraw_money(500.0);
+     accounts[1].withdraw_money(700.0);
+     println!("{:?}", accounts);
 
     //Transferring Money
-    println!("//MONEY TRANSFER//");
-    accounts[0].transfer_money(150.0, &mut accounts[1]);
+    println!("//MONEY TRANSFER FROM ALLAN TO JAMES//");
+
+    transfer_money(500.0, &mut accounts);
+    println!("{:?}", accounts);
+
+    //Function to Delete Account from the database
+    println!("//DELETE ACCOUNT AT INDEX 1//");
+    accounts.pop();
+    println!("{:?}", accounts);
+
 
     //Function to Delete Account at Index 0
     println!("//DELETE ACCOUNT AT INDEX 0//");
-    accounts.pop();
+    accounts.remove(0);
+    println!("{:?}", accounts);
 
 }
 
+fn transfer_money(amount: f64, accounts:&mut Vec<Account>) {
+    accounts[0].withdraw_money(amount);
+    accounts[1].deposit_money(amount);
+}
 
-#[derive(Debug)]
+
+#[derive(Debug, Clone)]
 struct Account {
     id: String,
     name: String,
@@ -76,11 +93,6 @@ impl AccountOperations for Account {
         self.balance -= amount;
     }
 
-    fn transfer_money(&mut self, amount: f64, target_account: &mut Account) {
-        self.withdraw_money(amount);
-        target_account.balance += amount;
-    }
-
 }
 trait AccountOperations {
 
@@ -93,7 +105,5 @@ trait AccountOperations {
     fn deposit_money(&mut self, amount: f64);
 
     fn withdraw_money(&mut self, amount: f64);
-
-    fn transfer_money(&mut self, amount: f64, target_account: &mut Account);
 
 }
