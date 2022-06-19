@@ -35,16 +35,18 @@ pub fn run() {
      println!("{:?}", accounts);
 
     //Transferring Money
-    println!("//MONEY TRANSFER FROM ALLAN TO JAMES//");
+    let mut accounts_copy = accounts.clone();
 
-    transfer_money(500.0, &mut accounts);
+    println!("//MONEY TRANSFER FROM ALLAN TO JAMES//");
+    accounts[0].transfer_money(300.0, &mut accounts_copy);
+
+    //transfer_money(500.0, &mut accounts);
     println!("{:?}", accounts);
 
     //Function to Delete Account from the database
     println!("//DELETE ACCOUNT AT INDEX 1//");
     accounts.pop();
     println!("{:?}", accounts);
-
 
     //Function to Delete Account at Index 0
     println!("//DELETE ACCOUNT AT INDEX 0//");
@@ -67,6 +69,13 @@ struct Account {
 }
 
 impl Account {
+    pub fn copy(&self) -> Account {
+        Account {
+            id: self.id.clone(),
+            name: self.name.clone(),
+            balance: self.balance,
+        }
+    }
     pub fn new(id: &str, name: &str, balance: f64) -> Self {
         Account {id: id.to_string(), name: name.to_string(), balance: balance}
     }
@@ -98,6 +107,11 @@ impl AccountOperations for Account {
         self.balance -= amount;
     }
 
+    fn transfer_money(&mut self, amount: f64, accounts:&mut Vec<Account>) {
+        self.withdraw_money(amount);
+        accounts[1].deposit_money(amount);
+    }
+
 }
 trait AccountOperations {
 
@@ -110,5 +124,7 @@ trait AccountOperations {
     fn deposit_money(&mut self, amount: f64);
 
     fn withdraw_money(&mut self, amount: f64);
+
+    fn transfer_money(&mut self, amount: f64, accounts:&mut Vec<Account>);
 
 }
