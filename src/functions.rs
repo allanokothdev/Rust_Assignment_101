@@ -12,21 +12,23 @@ pub fn run() {
 
     //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
-    let mut james_account = Account::new("james.testnet","James",100.0);
-    james_account.print_details();
-    accounts.push(james_account);
+    let mut _james_account = Account::new("james.testnet","James",100.0);
+    _james_account.print_details();
+    accounts.push(_james_account);
 
      //Depositing Money
     println!("//DEPOSIT MONEY//");
     accounts[0].deposit_money(50.0);
+    accounts[1].deposit_money(50.0);
 
      //Withdrawing Money
      println!("//WITHDRAWING MONEY");
      accounts[0].withdraw_money(200.0);
+     accounts[1].withdraw_money(100.0);
 
     //Transferring Money
     println!("//MONEY TRANSFER//");
-    accounts[0].transfer_money(150.0, &mut james_account);
+    accounts[0].transfer_money(150.0, &mut accounts[1]);
 
     //Function to Delete Account at Index 0
     println!("//DELETE ACCOUNT AT INDEX 0//");
