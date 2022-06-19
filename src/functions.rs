@@ -16,6 +16,11 @@ pub fn run() {
     _james_account.print_details();
     accounts.push(_james_account);
 
+    //Update Account Name
+    println!("//UPDATE ACCOUNT NAME//");
+    accounts[0].update_account("Allan Okoth");
+    println!("{:?}", accounts);
+
      //Depositing Money
     println!("//DEPOSIT 1000 & 2000 respectively//");
     accounts[0].deposit_money(1000.0);
