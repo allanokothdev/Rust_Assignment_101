@@ -55,10 +55,10 @@ pub fn run() {
 
 }
 
-fn transfer_money(amount: f64, accounts:&mut Vec<Account>) {
+/*fn transfer_money(amount: f64, accounts:&mut Vec<Account>) {
     accounts[0].withdraw_money(amount);
     accounts[1].deposit_money(amount);
-}
+}*/
 
 
 #[derive(Debug, Clone)]
