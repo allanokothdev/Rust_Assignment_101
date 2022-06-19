@@ -1,88 +1,97 @@
-pub fn bank() {
+
+pub fn run() {
 
     //Initialize Vector Database to store Accounts
     let mut accounts: Vec<Account> = Vec::new();
 
     //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
-    let allan = accounts.push(Account::new("Allan", 100.0));
-    println!("{:?}", allan);
-    println!("{:?}", accounts[0]);
+    let mut _allan_account = Account::new("allanokoth.testnet","Allan",100.0);
+    _allan_account.print_details();
+    accounts.push(_allan_account);
 
+    //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
-    let bob = accounts.push(Account::new("Bob", 100.0));
-    println!("{:?}", bob);
-    println!("{:?}", accounts[1]);
+    let mut james_account = Account::new("james.testnet","James",100.0);
+    james_account.print_details();
+    accounts.push(james_account);
 
-    println!("//FECTH ALL RECORDS//");
-    //Print all records
-    println!("{:?}", accounts);
-
-    println!("//CHANGE NAME OF ACCOUNT at INDEX 0//");
-    //Fetch and change Name of an Account at Index 0
-    let new_name = "Okoth";
-    accounts[0].name = new_name.to_string();
-    println!("I changed my name to {}",accounts[0].name);
-
-    //Depositing Money
+     //Depositing Money
     println!("//DEPOSIT MONEY//");
-    let pre_deposit_balance = accounts[0].balance;
-    let deposit = 100.0;
-    accounts[0].balance = pre_deposit_balance + deposit;
-    println!("{} + {} = {}", pre_deposit_balance, deposit, accounts[0].balance);
+    accounts[0].deposit_money(50.0);
 
-    //Withdrawing Money
-    println!("//WITHDRAWING MONEY");
-    let withdraw = 100.0;
-    let pre_withdrawal_balance = accounts[0].balance;
-    if pre_withdrawal_balance >= withdraw {
-        accounts[0].balance = pre_withdrawal_balance - withdraw;
-        println!("{} - {} = {}", pre_withdrawal_balance, withdraw, accounts[0].balance);
-    } else {
-        println!("Insufficient Balance");
-    }
+     //Withdrawing Money
+     println!("//WITHDRAWING MONEY");
+     accounts[0].withdraw_money(200.0);
 
     //Transferring Money
     println!("//MONEY TRANSFER//");
-    let pre_transfer_sender_balance = accounts[0].balance;
-    let pre_transfer_recipient_balance = accounts[1].balance;
-    println!("Sender Balance: {:?}", pre_transfer_sender_balance);
-    println!("Recipient Balance: {:?}", pre_transfer_recipient_balance);
-    let transfer = 50.0;
-
-    if pre_transfer_sender_balance >= transfer {
-        accounts[0].balance = pre_transfer_sender_balance - transfer;
-        accounts[1].balance = pre_transfer_recipient_balance + transfer;
-        println!(" Transferring {} to Bob...",transfer);
-        println!("Transfered Amount: {:?}", transfer);
-        println!("Okoth New Balance: {}", accounts[0].balance);
-        println!("Bob New Balance: {}", accounts[1].balance);
-        println!("Okoth sent {} to Bob, increasing Bob's balance from {} to {}", transfer, pre_transfer_recipient_balance, accounts[1].balance);
-    } else {
-        println!("Insufficient Balance");
-    }
-
+    accounts[0].transfer_money(150.0, &mut james_account);
 
     //Function to Delete Account at Index 0
-    println!("//DELETE ACCOUNT AT INDEX 0");
-    accounts.remove(0);
-    println!("{:?}", accounts);
-        
-}
+    println!("//DELETE ACCOUNT AT INDEX 0//");
+    accounts.pop();
 
+}
 
 
 #[derive(Debug)]
 struct Account {
+    id: String,
     name: String,
     balance: f64,
 }
 
 impl Account {
-    pub fn new(name: &str, balance: f64) -> Account {
-        Account {
-            name: name.to_string(),
-            balance: balance,
-        }
+    pub fn new(id: &str, name: &str, balance: f64) -> Self {
+        Account {id: id.to_string(), name: name.to_string(), balance: balance}
     }
+
+    pub fn print_details(&self) {
+        println!("{:?}", self);
+    }
+}
+
+impl AccountOperations for Account {
+
+    fn register(&mut self, account: &Account) {
+        println!("{:?}", account);
+    }
+
+    fn update_account(&mut self, name: &str) {
+        self.name = name.to_string();
+    }
+
+    fn delete_account(&mut self, accounts:&mut Vec<Account>) {
+        accounts.pop();
+    }
+
+    fn deposit_money(&mut self, amount: f64) {
+        self.balance += amount;
+    }
+
+    fn withdraw_money(&mut self, amount: f64) {
+        self.balance -= amount;
+    }
+
+    fn transfer_money(&mut self, amount: f64, target_account: &mut Account) {
+        self.withdraw_money(amount);
+        target_account.balance += amount;
+    }
+
+}
+trait AccountOperations {
+
+    fn register(&mut self, account: &Account);
+    
+    fn update_account(&mut self, name: &str);
+
+    fn delete_account(&mut self, account: &mut Vec<Account>);
+
+    fn deposit_money(&mut self, amount: f64);
+
+    fn withdraw_money(&mut self, amount: f64);
+
+    fn transfer_money(&mut self, amount: f64, target_account: &mut Account);
+
 }
