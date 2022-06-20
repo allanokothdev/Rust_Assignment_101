@@ -7,7 +7,6 @@ pub fn run() {
     //Create and Add Account to the database
     println!("//CREATE NEW ACCOUNT//");
     let mut _allan_account = Account::new("allanokoth.testnet","Allan",1000.0);
-    _allan_account.print_details();
     accounts.push(_allan_account);
 
     //Create and Add Account to the database
@@ -35,8 +34,8 @@ pub fn run() {
      println!("{:?}", accounts);
 
     //Transferring Money
+    println!("//TRANSFERRING 500 & 700 respectively");
     transfer_money(500.0, &mut accounts);
-    println!("{:?}", accounts);
 
     //Function to Delete Account from the database
     println!("//DELETE ACCOUNT AT INDEX 1//");
@@ -50,10 +49,12 @@ pub fn run() {
 
 }
 
+
 fn transfer_money(amount: f64, accounts:&mut Vec<Account>) {
     accounts[0].withdraw_money(amount);
     accounts[1].deposit_money(amount);
 }
+
 
 
 #[derive(Debug, Clone)]
@@ -64,6 +65,14 @@ struct Account {
 }
 
 impl Account {
+    pub fn copy(&self) -> Account {
+        Account {
+            id: self.id.clone(),
+            name: self.name.clone(),
+            balance: self.balance,
+        }
+    }
+
     pub fn new(id: &str, name: &str, balance: f64) -> Self {
         Account {id: id.to_string(), name: name.to_string(), balance: balance}
     }
